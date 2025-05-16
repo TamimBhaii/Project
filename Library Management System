@@ -1,0 +1,101 @@
+class Library:
+    book_list = []
+
+    @classmethod
+    def entry_book(cls, book):
+        cls.book_list.append(book)
+
+    @classmethod
+    def view_all_books(cls):
+        if not cls.book_list:
+            print("No books in the library.")
+            return
+        for book in cls.book_list:
+            book.view_book_info()
+
+    @classmethod
+    def find_book_by_id(cls, book_id):
+        for book in cls.book_list:
+            if book.get_book_id() == book_id:
+                return book
+        return None
+
+
+class Book:
+    def __init__(self, book_id, title, author):
+        self.__book_id = book_id
+        self.__title = title
+        self.__author = author
+        self.__availability = True
+        Library.entry_book(self)
+
+    def borrow_book(self):
+        if self.__availability:
+            self.__availability = False
+            print("Book Borrowed Successfully...")
+        else:
+            print("This book is already borrowed...")
+
+    def return_book(self):
+        if not self.__availability:
+            self.__availability = True
+            print("Book returned successfully...")
+        else:
+            print("This book was not borrowed...")
+
+    def view_book_info(self):
+        print(f"ID: {self.__book_id} | Title: {self.__title} | Author: {self.__author} | Availability: {'Available' if self.__availability else 'Not Available'}")
+
+    def get_book_id(self):
+        return self.__book_id
+
+    def is_available(self):
+        return self.__availability
+
+
+def main():
+    print("\n\t\t.....Welcome to the Library Management System.....")
+
+    Book("B101", "Python Basics", "Mr. Tamim Islam")
+    Book("B102", "Machine Learning", "Mr. X")
+    Book("B103", "Data Structures", "Ms. Safiyatun Shikha")
+    Book("B104", "Algorithms", "Ms. Y")
+
+    while True:
+        print("\nMenu:")
+        print("1. View All Books")
+        print("2. Borrow Book")
+        print("3. Return Book")
+        print("4. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            Library.view_all_books()
+
+        elif choice == '2':
+            book_id = input("Enter Book ID to borrow: ")
+            book = Library.find_book_by_id(book_id)
+            if book:
+                book.borrow_book()
+            else:
+                print("Invalid Book ID Please try again, Thank U....")
+
+        elif choice == '3':
+            book_id = input("Enter Book ID to return: ")
+            book = Library.find_book_by_id(book_id)
+            if book:
+                book.return_book()
+            else:
+                print("Invalid Book ID Please try again, Thank U....")
+
+        elif choice == '4':
+            print("\n\n\t\t.....Thank you for using the Library System.....")
+            break
+
+        else:
+            print("Invalid input. Please select a valid option in menu...")
+
+
+if __name__ == "__main__":
+    main()
