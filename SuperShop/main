@@ -1,0 +1,122 @@
+from supershopapp import SuperShopApp
+from product import Product
+
+app = SuperShopApp()
+
+def dashboard():
+    while True:
+        print("\n\n\t\t*****welcome to our SuperShop*****")
+        print("\n\n1. Sign up as Customer")
+        print("2. Sign up as Seller")
+        print("3. Login")
+        print("4. Exit")
+        choice = input("Enter choice: ")
+        print("----------------")
+
+        if choice == '1':
+            signup_customer()
+        elif choice == '2':
+            signup_seller()
+        elif choice == '3':
+            login()
+        elif choice == '4':
+            print("\n\n\t\tThank you for using our Supershop...")
+            break
+        else:
+            print("\nInvalid choice, try again...")
+
+def signup_customer():
+    while True:
+        print("\n0. Back")
+        print("\t\tSign Up to customer account")
+        print("\t\t---------------------------")
+        email = input("Enter your email: ")
+        if email == '0':
+            return
+        password = input("Enter password: ")
+        if password == '0':
+            return
+        app.sign_up_customer(email, password)
+        print("\nAccount created successfully...")
+        return
+
+def signup_seller():
+    while True:
+        print("\n0. Back")
+        print("\t\tSign Up to seller account")
+        print("\t\t-------------------------")
+        email = input("Enter email: ")
+        if email == '0':
+            return
+        password = input("Enter password: ")
+        if password == '0':
+            return
+        app.sign_up_seller(email, password)
+        print("\nAccount created successfully...")
+        return
+
+def login():
+    email = input("Enter email: ")
+    password = input("Enter password: ")
+    user = app.login(email, password)
+    if user:
+        print("\nLogin successful...")
+        if hasattr(user, 'cart'):
+            customer_panel(user)
+        else:
+            seller_panel(user)
+    else:
+        print("\nIncorrect information, try again...")
+
+def seller_panel(seller):
+    while True:
+        print("\n1. Add Product")
+        print("2. Back to Main Page")
+        choice = input("Enter choice: ")
+        print("----------------")
+
+        if choice == '1':
+            name = input("Product name: ")
+            price = int(input("Price: "))
+            quantity = int(input("Quantity: "))
+            p = Product(name, price, quantity)
+            seller.add_product(p)
+            app.add_product_to_market(p)
+            print("\nProduct added successfully...")
+        elif choice == '2':
+            return
+
+def customer_panel(customer):
+    while True:
+        print("\n1. View Products")
+        print("2. Add to Cart")
+        print("3. View Cart")
+        print("4. Pay Bill")
+        print("0. Back to Dashboard")
+        choice = input("Enter choice: ")
+        print("----------------")
+
+        if choice == '1':
+            for idx, p in enumerate(app.get_available_products()):
+                print(f"{idx+1}. {p.name} - {p.price} Tk - {p.quantity} in stock")
+        elif choice == '2':
+            products = app.get_available_products()
+            for idx, p in enumerate(products):
+                print(f"{idx+1}. {p.name} - {p.price} Tk - {p.quantity} in stock")
+            ch = int(input("Select product: ")) - 1
+            qty = int(input("Quantity: "))
+            if 0 <= ch < len(products) and qty <= products[ch].quantity:
+                customer.add_to_cart(products[ch], qty)
+                print("\nAdded to cart...")
+            else:
+                print("\nInvalid product or quantity, try again...")
+        elif choice == '3':
+            for item, qty in customer.view_cart():
+                print(f"{item.name} x {qty} = {item.price * qty} Tk")
+        elif choice == '4':
+            total = customer.pay_bill()
+            print(f"\nPayment successful. Total bill: {total} Tk, Thank U...")
+        elif choice == '0':
+            return
+
+dashboard()
