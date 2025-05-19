@@ -1,0 +1,33 @@
+from customer import Customer
+from seller import Seller
+from product import Product
+
+class SuperShopApp:
+    def __init__(self):
+        self.customers = []
+        self.sellers = []
+        self.logged_in_user = None
+        self.products = []
+
+    def sign_up_customer(self, email, password):
+        c = Customer(email, password)
+        self.customers.append(c)
+        return c
+
+    def sign_up_seller(self, email, password):
+        s = Seller(email, password)
+        self.sellers.append(s)
+        return s
+
+    def login(self, email, password):
+        for user in self.customers + self.sellers:
+            if user.email == email and user.password == password:
+                self.logged_in_user = user
+                return user
+        return None
+
+    def add_product_to_market(self, product):
+        self.products.append(product)
+
+    def get_available_products(self):
+        return [p for p in self.products if p.quantity > 0]
