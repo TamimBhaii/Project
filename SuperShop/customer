@@ -1,0 +1,20 @@
+from user import User
+
+class Customer(User):
+    def __init__(self, email, password):
+        super().__init__(email, password)
+        self.cart = []
+
+    def add_to_cart(self, product, quantity):
+        self.cart.append((product, quantity))
+
+    def view_cart(self):
+        return self.cart
+
+    def pay_bill(self):
+        total = 0
+        for item, qty in self.cart:
+            total += item.price * qty
+            item.quantity -= qty
+        self.cart = []
+        return total
