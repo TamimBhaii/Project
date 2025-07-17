@@ -1,0 +1,1 @@
+I am a beginner web developer and this is my first single-page portfolio website created using HTML, CSS, and the Bootstrap framework. Please excuse any mistakes or imperfections. I appreciate your kind feedback to help me improve and create beautiful designs.
