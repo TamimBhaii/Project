@@ -1,0 +1,27 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.fa-brands:hover {
+    color: rgb(3, 3, 142);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: rgb(3, 3, 142);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.custom-navbar {
+  background-color: #f0f4f8; 
+}
+
+
+.double-line {
+    border: none;
+    height: 5px;
+    background: linear-gradient(to bottom, #000 1px, transparent 1px, #000 3px, transparent 3px);
+}
